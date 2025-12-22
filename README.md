@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BDE Fénelon
 
-## Getting Started
+> **L'asso qui fait bouger ton campus.**  
+> Soirées, voyages, et bons plans dans ta poche.
 
-First, run the development server:
+L'application officielle du BDE Fénelon, conçue pour centraliser tous les événements et services de l'association étudiante.
+
+## 🚀 Fonctionnalités
+
+- **Billetterie** : Achetez vos places pour les soirées et événements directement depuis l'app.
+- **Actualités** : Restez informés des dernières nouvelles du campus.
+- **Espace Étudiant** : Accédez à vos billets et bons plans (à venir).
+
+## 🛠 Tech Stack
+
+Ce projet suit une architecture moderne et performante, respectant les standards stricts de développement :
+
+- **Framework** : [Next.js 16](https://nextjs.org/) (App Router)
+- **Langage** : TypeScript
+- **Style** : [Tailwind CSS 4](https://tailwindcss.com/)
+- **Composants** : [ShadCN UI](https://ui.shadcn.com/)
+- **Animations** : Framer Motion
+- **Authentification** : Better Auth (En cours d'intégration)
+- **Base de données** : Supabase (PostgreSQL) (En cours d'intégration)
+- **Gestionnaire de paquets** : `pnpm`
+
+## 📦 Installation & Démarrage
+
+Assurez-vous d'avoir `pnpm` installé.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Installer les dépendances
+pnpm install
+
+# Lancer le serveur de développement
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrez [http://localhost:3000](http://localhost:3000) pour voir le résultat.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗 Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Le projet est structuré pour être scalable et maintenable :
 
-## Learn More
+- `app/` : Routes et pages (Next.js App Router).
+- `components/` : Composants UI (ShadCN) et composants métier.
+- `lib/` : Utilitaires et configurations.
+- `hooks/` : Hooks React personnalisés.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Développé avec ❤️ pour les étudiants de Fénelon.
