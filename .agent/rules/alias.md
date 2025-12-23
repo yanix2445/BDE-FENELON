@@ -2,52 +2,123 @@
 trigger: always_on
 ---
 
+# ALIASES
 
-###ALIASES OPTIMISÉS POUR LA RAPIDITÉ ET SPÉCIALISÉS
+```bash
+# =============================================================================
+# 🛠️ ARCHITECTURE DES ALIASES (EZA + SYSTEM + NEXT.JS)
+# =============================================================================
 
-# Vérification si eza est installé
+# --- 1. NAVIGATION & SYSTÈME ---
 
-if command -v eza &>/dev/null; then # === ALIASES DE BASE (avec header par défaut) === alias l="echo
-'📄 Liste simple (1 colonne)' && eza --icons=auto --color=always -1" alias ll="echo '📋 Liste
-détaillée + Git' && eza --icons=auto --color=always -l --git --header" alias la="echo '👁️ Tout
-afficher (fichiers cachés inclus)' && eza --icons=auto --color=always -la --git --header"
+alias cls="clear"
+alias grep="grep --color=auto"
+alias ..="cd .."
+alias ...="cd ../.."
 
-    # === ALIASES SPÉCIALISÉS (vos raccourcis) ===
-    alias ls="echo '📊 Trié par TAILLE (plus gros en bas)' && eza --icons=auto --color=always -la --git --header -s size"
-    alias ld="echo '⏰ Trié par DATE (plus récent en bas)' && eza --icons=auto --color=always -la --git --header -s time"
-    alias lt="echo '🌳 Vue ARBRE (3 niveaux max)' && eza --icons=auto --color=always -T --level=3 -la --header --git-ignore"
-    alias lg="echo '🔀 Vue GIT (statuts des fichiers)' && eza --icons=auto --color=always -la --git --header"
+# --- 2. OUTILS & ÉDITEURS ---
 
+alias edit="cursor ~/.zshrc_forge"               # Édition rapide de la config Forge
+alias editcc="cursor ~/.claude"                  # Édition config Claude
+alias rld="source ~/.zshrc && source ~/.zshrc_forge && echo '✅ Config rechargée!'"
+alias cc="claude --dangerously-skip-permissions" # Mode "God Mode" pour Claude
 
-    # === FONCTIONS EZA AVANCÉES ===
-    # Recherche rapide dans les fichiers
-    lf() {
-        local pattern=${1:-"*"}
-        echo "🔍 Recherche: '$pattern' dans les fichiers"
-        eza --icons=auto --color=always -la --git --header | grep -i "$pattern"
-    }
+# --- 3. GIT (ESSENTIELS) ---
 
-    # Arbre personnalisé avec profondeur variable
-    ltree() {
-        local depth=${1:-5}
-        echo "🌲 Arbre personnalisé (profondeur: $depth niveaux)"
-        eza --icons=auto --color=always -T --level="$depth" --git-ignore
-    }
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gp="git push"
+alias gl="git log --oneline --graph --decorate"  # Log amélioré
 
-    # Fonction d'aide pour les alias eza
-    lhelp() {
-        echo "🚀 AIDE ALIAS EZA:"
-        echo "  l   = 📄 Liste simple (1 colonne)"
-        echo "  ll  = 📋 Liste détaillée + Git + Header"
-        echo "  la  = 👁️ Tout afficher (fichiers cachés)"
-        echo "  ls  = 📊 Trié par TAILLE (gros → bas)"
-        echo "  ld  = ⏰ Trié par DATE (récent → bas)"
-        echo "  lt  = 🌳 Vue ARBRE (3 niveaux)"
-        echo "  lg  = 🔀 Vue GIT (statuts)"
-        echo "  lf  = 🔍 Recherche fichiers"
-        echo "  ltree = 🌲 Arbre personnalisé"
-    }
+# =============================================================================
+# 🚀 EZA (REMPLACEMENT MODERNE DE LS)
+# =============================================================================
 
-else # === FALLBACK VERS LS CLASSIQUE === echo "⚠️ eza non trouvé, utilisation de ls classique"
-alias ll="ls -la --color=auto" alias la="ls -A --color=auto" alias l="ls -CF --color=auto" alias
-ltree="tree" fi
+if command -v eza &>/dev/null; then
+    _EZA_OPTS="--icons=auto --color=always --group-directories-first --git"
+
+    alias l="eza --icons=auto --color=always -1"           # Simple
+    alias ll="eza $_EZA_OPTS -l --header"                  # Détail
+    alias la="eza $_EZA_OPTS -la --header"                 # Tout (cachés)
+    alias lg="eza $_EZA_OPTS -la --header --git"           # Git focus
+    alias ls="eza $_EZA_OPTS -la --header -s size"         # Tri: Taille
+    alias ld="eza $_EZA_OPTS -la --header -s new"          # Tri: Date
+    alias lt="eza $_EZA_OPTS -T --level=3 -la --git-ignore" # Arbre
+
+    # Recherche fichier rapide
+    lf() { eza $_EZA_OPTS -la | grep -i "${1:-*}"; }
+    
+    # Arbre profondeur variable (ex: ltree 5)
+    ltree() { eza $_EZA_OPTS -T --level="${1:-2}" --git-ignore; }
+
+else
+    echo "⚠️ eza non trouvé. Fallback sur ls."
+    alias ll="ls -la --color=auto"
+    alias la="ls -A --color=auto"
+    alias l="ls -CF --color=auto"
+fi
+
+# =============================================================================
+# ⚡ NEXT.JS + PNPM (FAST CODING)
+# =============================================================================
+
+# --- GESTION PROJET ---
+
+alias pi="pnpm install"
+alias pu="pnpm update"
+alias pa="pnpm add"
+alias pad="pnpm add -D"
+alias pr="pnpm remove"
+alias plg="pnpm list --depth=0 --global"
+
+# --- DEV & PROD ---
+
+alias pdev="pnpm dev"           # 🟢 Serveur Dev
+alias pbuild="pnpm build"       # 🏗️ Build
+alias pstart="pnpm start"       # 🚀 Prod
+alias plint="pnpm lint"         # 🧹 Lint
+alias plintf="pnpm lint --fix"  # ✨ Lint Fix
+alias ptype="pnpm type-check"   # 🛡️ TypeScript Check
+
+# --- UTILITAIRES ---
+
+# Hard Reset: Supprime tout et réinstalle
+
+alias pcl="rm -rf .next node_modules/.cache && pnpm install && echo '♻️ Cache nettoyé & Dépendances réinstallées.'"
+alias panalyze="pnpm analyze"
+alias ptest="pnpm test"
+alias ptestw="pnpm test:watch"
+
+# =============================================================================
+# ❓ SYSTÈME D'AIDE
+# =============================================================================
+
+nexthelp() {
+    echo ""
+    echo -e "\033[1;36m╔══════════════════════════════════════════════════════════════╗\033[0m"
+    echo -e "\033[1;36m║                🚀 AIDE ALIASES NEXT.JS + PNPM                ║\033[0m"
+    echo -e "\033[1;36m╠══════════════════════════════════════════════════════════════╣\033[0m"
+    echo "║ 📦 \033[1;33mGESTION:\033[0m    pi (install), pa (add), pad (add -D), pr (rm)  ║"
+    echo "║ 🔧 \033[1;33mDEV:\033[0m        pdev, pbuild, pstart                           ║"
+    echo "║ 🛡️ \033[1;33mQUALITÉ:\033[0m    plint, plintf (fix), ptype (ts check)          ║"
+    echo "║ 🧹 \033[1;33mUTILS:\033[0m      pcl (hard reset), ptest, panalyze              ║"
+    echo -e "\033[1;36m╚══════════════════════════════════════════════════════════════╝\033[0m"
+    echo ""
+}
+
+lhelp() {
+    echo ""
+    echo -e "\033[1;34m🚀 EZA ALIASES:\033[0m"
+    echo "  l/ll/la = Listes (Simple / Détail / Tout)"
+    echo "  ls/ld   = Tri (Taille / Date)"
+    echo "  lt/lg   = Vues (Arbre / Git)"
+    echo "  lf      = 🔍 Chercher: lf 'nom'"
+    echo "  ltree   = 🌲 Arbre: ltree <profondeur>"
+    echo ""
+}
+
+# Alias global pour toutes les aides
+
+alias forgehelp="lhelp && nexthelp"
+```
